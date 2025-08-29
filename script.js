@@ -165,7 +165,7 @@ window.castVote = function(title, points) {
 window.checkPassword = function() {
   const input = document.getElementById("passwordInput").value;
   const error = document.getElementById("loginError");
-  if (input === "f@m!lY") {
+  if (input === "1234") {
     document.getElementById("loginScreen").style.display = "none";
     document.getElementById("appContent").style.display = "block";
     initializeApp();
