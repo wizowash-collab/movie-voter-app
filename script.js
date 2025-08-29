@@ -33,7 +33,6 @@ function initializeApp() {
       poster: "https://m.media-amazon.com/images/M/MV5BNjQzZTc2NzAtYjYxZi00ZTYxLTg4YjMtYjYxYzYxYjYxYzYxXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg",
       streaming: "HBO Max (subscription), Prime Video (rent/buy)"
     }
-    // Add more movies as needed
   ];
 
   loadBtn.addEventListener("click", () => {
@@ -113,4 +112,64 @@ function initializeApp() {
       card.innerHTML = `
         <img src="${poster}" alt="${data.Title}" />
         <h3>${data.Title}</h3>
-        <
+        <p>${genre}</p>
+        <p>🌐 ${language}, ⏱️ ${runtime}</p>
+        <p>⭐ ${rating}</p>
+        <p>📺 Watch on: (streaming info not available for live search)</p>
+        <div class="vote-buttons">
+          <button onclick="castVote('${data.Title}', 5)">👍</button>
+          <button onclick="castVote('${data.Title}', 2)">😐</button>
+          <button onclick="castVote('${data.Title}', 1)">👎</button>
+        </div>
+      `;
+
+      movieGrid.appendChild(card);
+      votes[data.Title] = 0;
+
+      setTimeout(() => {
+        const winner = Object.entries(votes).sort((a, b) => b[1] - a[1])[0];
+        winnerDiv.textContent = winner
+          ? `🏆 Most Points: ${winner[0]}`
+          : "No votes cast.";
+      }, 5 * 60 * 1000);
+    } catch (error) {
+      console.error("Error fetching movie:", error);
+      movieGrid.innerHTML = `<p>Something went wrong. Try again later.</p>`;
+    }
+  });
+
+  exportBtn.addEventListener("click", () => {
+    const winner = Object.entries(votes).sort((a, b) => b[1] - a[1])[0];
+    const text = winner
+      ? `Movie Night Pick: ${winner[0]}\n\nShortlist:\n` +
+        Object.entries(votes).map(([title, score]) => `${title}: ${score} pts`).join("\n")
+      : "No votes were cast.";
+
+    const blob = new Blob([text], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "movie-night.txt";
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+}
+
+window.castVote = function(title, points) {
+  if (votes[title] !== undefined) {
+    votes[title] += points;
+  }
+};
+
+window.checkPassword = function() {
+  const input = document.getElementById("passwordInput").value;
+  const error = document.getElementById("loginError");
+  if (input === "f@m!@#2025H3!!0") {
+    document.getElementById("loginScreen").style.display = "none";
+    document.getElementById("appContent").style.display = "block";
+    initializeApp();
+  } else {
+    error.textContent = "Incorrect password. Try again.";
+  }
+};
