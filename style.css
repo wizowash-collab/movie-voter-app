@@ -80,3 +80,10 @@ button {
   font-weight: bold;
   text-align: center;
 }
+
+footer {
+  margin-top: 3rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #666;
+}
