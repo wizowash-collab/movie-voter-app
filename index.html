@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Movie Voter App</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>🎬 Movie Voter App</h1>
+    <p>Pick your mood, browse movies, and vote!</p>
+  </header>
+
+  <section id="filters">
+    <label for="mood">Mood:</label>
+    <select id="mood">
+      <option value="feel-good">Feel-Good</option>
+      <option value="thrilling">Thrilling</option>
+      <option value="romantic">Romantic</option>
+      <option value="magical">Magical</option>
+      <option value="inspiring">Inspiring</option>
+    </select>
+
+    <label for="language">Language:</label>
+    <select id="language">
+      <option value="English">English</option>
+      <option value="Japanese">Japanese</option>
+      <option value="Spanish">Spanish</option>
+      <option value="Hindi">Hindi</option>
+    </select>
+
+    <label for="genre">Genre:</label>
+    <select id="genre">
+      <option value="Comedy">Comedy</option>
+      <option value="Drama">Drama</option>
+      <option value="Animation">Animation</option>
+      <option value="Adventure">Adventure</option>
+    </select>
+
+    <button id="loadMovies">Browse Movies</button>
+  </section>
+
+  <section id="shortlist">
+    <h2>🕒 5-Minute Voting Grid</h2>
+    <div id="movieGrid" class="grid"></div>
+    <div id="winner"></div>
+    <button id="exportBtn">📄 Export to Notes</button>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
