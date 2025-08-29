@@ -172,4 +172,4 @@ window.checkPassword = function() {
   } else {
     error.textContent = "Incorrect password. Try again.";
   }
-}; 
+};
