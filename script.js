@@ -1,4 +1,4 @@
-const API_KEY = "your_omdb_api_key"; // Replace with your OMDb API key
+const API_KEY = "2f0cfc7a"; // Replace with your OMDb API key
 const loadBtn = document.getElementById("loadMovies");
 const movieGrid = document.getElementById("movieGrid");
 const winnerDiv = document.getElementById("winner");
