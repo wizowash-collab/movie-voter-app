@@ -165,11 +165,11 @@ window.castVote = function(title, points) {
 window.checkPassword = function() {
   const input = document.getElementById("passwordInput").value;
   const error = document.getElementById("loginError");
-  if (input === "f@m!@#2025H3!!0") {
+  if (input === "f@m!lY2@@25") {
     document.getElementById("loginScreen").style.display = "none";
     document.getElementById("appContent").style.display = "block";
     initializeApp();
   } else {
     error.textContent = "Incorrect password. Try again.";
   }
-};
+}; 
