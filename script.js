@@ -1,4 +1,8 @@
+const API_KEY = "your_omdb_api_key"; // Replace with your OMDb API key
+
 const loadBtn = document.getElementById("loadMovies");
+const searchBtn = document.getElementById("searchBtn");
+const searchInput = document.getElementById("searchInput");
 const movieGrid = document.getElementById("movieGrid");
 const winnerDiv = document.getElementById("winner");
 const exportBtn = document.getElementById("exportBtn");
@@ -7,120 +11,61 @@ const moodSelect = document.getElementById("mood");
 const languageSelect = document.getElementById("language");
 const genreSelect = document.getElementById("genre");
 
-const movieData = [
-  {
-    title: "Paddington 2",
-    mood: "feel-good",
-    language: "English",
-    genre: "Comedy",
-    runtime: "1h 43m",
-    rating: "7.8",
-    poster: "https://m.media-amazon.com/images/M/MV5BMjI4NzYxNzYyNl5BMl5BanBnXkFtZTgwNzYxNzYzNDM@._V1_SX300.jpg",
-    streaming: "Netflix (subscription), Prime Video (rent $3.79)"
-  },
-  {
-    title: "Hidden Figures",
-    mood: "inspiring",
-    language: "English",
-    genre: "Drama",
-    runtime: "2h 7m",
-    rating: "7.9",
-    poster: "https://m.media-amazon.com/images/M/MV5BMjQxMzYxNjY2NF5BMl5BanBnXkFtZTgwNjQxNjM0MDI@._V1_SX300.jpg",
-    streaming: "Disney+ (subscription), Prime Video (rent $3.99)"
-  },
-  {
-    title: "Spirited Away",
-    mood: "magical",
-    language: "Japanese",
-    genre: "Animation",
-    runtime: "2h 5m",
-    rating: "8.6",
-    poster: "https://m.media-amazon.com/images/M/MV5BNjQzZTc2NzAtYjYxZi00ZTYxLTg4YjMtYjYxYzYxYjYxYzYxXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg",
-    streaming: "HBO Max (subscription), Prime Video (rent/buy)"
-  },
-  {
-    title: "Coco",
-    mood: "magical",
-    language: "Spanish",
-    genre: "Animation",
-    runtime: "1h 45m",
-    rating: "8.4",
-    poster: "https://m.media-amazon.com/images/M/MV5BMjQxMzYxNjY2NF5BMl5BanBnXkFtZTgwNjQxNjM0MDI@._V1_SX300.jpg",
-    streaming: "Disney+ (subscription), Prime Video (rent/buy)"
-  },
-  {
-    title: "The Intouchables",
-    mood: "feel-good",
-    language: "French",
-    genre: "Drama",
-    runtime: "1h 52m",
-    rating: "8.5",
-    poster: "https://m.media-amazon.com/images/M/MV5BMjI4NzYxNzYyNl5BMl5BanBnXkFtZTgwNzYxNzYzNDM@._V1_SX300.jpg",
-    streaming: "Prime Video (free with trial), Apple TV, Tubi (free)"
-  },
-  {
-    title: "The Secret Life of Walter Mitty",
-    mood: "inspiring",
-    language: "English",
-    genre: "Adventure",
-    runtime: "1h 54m",
-    rating: "7.3",
-    poster: "https://m.media-amazon.com/images/M/MV5BMjI4NzYxNzYyNl5BMl5BanBnXkFtZTgwNzYxNzYzNDM@._V1_SX300.jpg",
-    streaming: "Hulu (subscription), Prime Video (rent/buy)"
-  }
-];
-
 let votes = {};
 
-loadBtn.addEventListener("click", () => {
-  const selectedMood = moodSelect.value;
-  const selectedLanguage = languageSelect.value;
-  const selectedGenre = genreSelect.value;
+searchBtn.addEventListener("click", async () => {
+  const title = searchInput.value.trim();
+  if (!title) return;
 
   movieGrid.innerHTML = "";
   winnerDiv.textContent = "";
   votes = {};
 
-  const filteredMovies = movieData.filter(movie =>
-    movie.mood === selectedMood &&
-    movie.language === selectedLanguage &&
-    movie.genre === selectedGenre
-  );
+  try {
+    const res = await fetch(`https://www.omdbapi.com/?t=${encodeURIComponent(title)}&apikey=${API_KEY}`);
+    const data = await res.json();
 
-  if (filteredMovies.length === 0) {
-    movieGrid.innerHTML = `<p>No movies match your filters. Try adjusting your selections.</p>`;
-    return;
-  }
+    if (!data || data.Response === "False") {
+      movieGrid.innerHTML = `<p>Movie not found. Try another title.</p>`;
+      return;
+    }
 
-  filteredMovies.forEach(movie => {
+    const poster = data.Poster !== "N/A" ? data.Poster : "assets/placeholder.jpg";
+    const genre = data.Genre || "Unknown";
+    const language = data.Language || "Unknown";
+    const runtime = data.Runtime || "Unknown";
+    const rating = data.imdbRating !== "N/A" ? data.imdbRating : "Not rated";
+
     const card = document.createElement("div");
     card.className = "movie-card";
 
     card.innerHTML = `
-      <img src="${movie.poster}" alt="${movie.title}" />
-      <h3>${movie.title}</h3>
-      <p>${movie.genre}</p>
-      <p>🌐 ${movie.language}, ⏱️ ${movie.runtime}</p>
-      <p>⭐ ${movie.rating}</p>
-      <p>📺 Watch on: ${movie.streaming}</p>
+      <img src="${poster}" alt="${data.Title}" />
+      <h3>${data.Title}</h3>
+      <p>${genre}</p>
+      <p>🌐 ${language}, ⏱️ ${runtime}</p>
+      <p>⭐ ${rating}</p>
+      <p>📺 Watch on: (streaming info not available for live search)</p>
       <div class="vote-buttons">
-        <button onclick="castVote('${movie.title}', 5)">👍</button>
-        <button onclick="castVote('${movie.title}', 2)">😐</button>
-        <button onclick="castVote('${movie.title}', 1)">👎</button>
+        <button onclick="castVote('${data.Title}', 5)">👍</button>
+        <button onclick="castVote('${data.Title}', 2)">😐</button>
+        <button onclick="castVote('${data.Title}', 1)">👎</button>
       </div>
     `;
 
     movieGrid.appendChild(card);
-    votes[movie.title] = 0;
-  });
+    votes[data.Title] = 0;
 
-  // Start 5-minute timer
-  setTimeout(() => {
-    const winner = Object.entries(votes).sort((a, b) => b[1] - a[1])[0];
-    winnerDiv.textContent = winner
-      ? `🏆 Most Points: ${winner[0]}`
-      : "No votes cast.";
-  }, 5 * 60 * 1000);
+    setTimeout(() => {
+      const winner = Object.entries(votes).sort((a, b) => b[1] - a[1])[0];
+      winnerDiv.textContent = winner
+        ? `🏆 Most Points: ${winner[0]}`
+        : "No votes cast.";
+    }, 5 * 60 * 1000);
+  } catch (error) {
+    console.error("Error fetching movie:", error);
+    movieGrid.innerHTML = `<p>Something went wrong. Try again later.</p>`;
+  }
 });
 
 window.castVote = function(title, points) {
