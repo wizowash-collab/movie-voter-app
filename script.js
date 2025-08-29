@@ -16,7 +16,7 @@ const movieData = [
     runtime: "1h 43m",
     rating: "7.8",
     poster: "https://m.media-amazon.com/images/M/MV5BMjI4NzYxNzYyNl5BMl5BanBnXkFtZTgwNzYxNzYzNDM@._V1_SX300.jpg",
-    platforms: "Netflix (subscription), Prime Video (rent $3.79)"
+    streaming: "Netflix (subscription), Prime Video (rent $3.79)"
   },
   {
     title: "Hidden Figures",
@@ -26,7 +26,7 @@ const movieData = [
     runtime: "2h 7m",
     rating: "7.9",
     poster: "https://m.media-amazon.com/images/M/MV5BMjQxMzYxNjY2NF5BMl5BanBnXkFtZTgwNjQxNjM0MDI@._V1_SX300.jpg",
-    platforms: "Disney+ (subscription), Prime Video (rent $3.99)"
+    streaming: "Disney+ (subscription), Prime Video (rent $3.99)"
   },
   {
     title: "Spirited Away",
@@ -36,7 +36,7 @@ const movieData = [
     runtime: "2h 5m",
     rating: "8.6",
     poster: "https://m.media-amazon.com/images/M/MV5BNjQzZTc2NzAtYjYxZi00ZTYxLTg4YjMtYjYxYzYxYjYxYzYxXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg",
-    platforms: "HBO Max (subscription), Prime Video (rent/buy)"
+    streaming: "HBO Max (subscription), Prime Video (rent/buy)"
   },
   {
     title: "Coco",
@@ -46,7 +46,7 @@ const movieData = [
     runtime: "1h 45m",
     rating: "8.4",
     poster: "https://m.media-amazon.com/images/M/MV5BMjQxMzYxNjY2NF5BMl5BanBnXkFtZTgwNjQxNjM0MDI@._V1_SX300.jpg",
-    platforms: "Disney+ (subscription), Prime Video (rent/buy)"
+    streaming: "Disney+ (subscription), Prime Video (rent/buy)"
   },
   {
     title: "The Intouchables",
@@ -56,7 +56,7 @@ const movieData = [
     runtime: "1h 52m",
     rating: "8.5",
     poster: "https://m.media-amazon.com/images/M/MV5BMjI4NzYxNzYyNl5BMl5BanBnXkFtZTgwNzYxNzYzNDM@._V1_SX300.jpg",
-    platforms: "Prime Video (free with trial), Apple TV, Tubi (free)"
+    streaming: "Prime Video (free with trial), Apple TV, Tubi (free)"
   },
   {
     title: "The Secret Life of Walter Mitty",
@@ -66,7 +66,7 @@ const movieData = [
     runtime: "1h 54m",
     rating: "7.3",
     poster: "https://m.media-amazon.com/images/M/MV5BMjI4NzYxNzYyNl5BMl5BanBnXkFtZTgwNzYxNzYzNDM@._V1_SX300.jpg",
-    platforms: "Hulu (subscription), Prime Video (rent/buy)"
+    streaming: "Hulu (subscription), Prime Video (rent/buy)"
   }
 ];
 
@@ -102,7 +102,7 @@ loadBtn.addEventListener("click", () => {
       <p>${movie.genre}</p>
       <p>🌐 ${movie.language}, ⏱️ ${movie.runtime}</p>
       <p>⭐ ${movie.rating}</p>
-      <p>📺 Watch on: ${movie.platforms}</p>
+      <p>📺 Watch on: ${movie.streaming}</p>
       <div class="vote-buttons">
         <button onclick="castVote('${movie.title}', 5)">👍</button>
         <button onclick="castVote('${movie.title}', 2)">😐</button>
