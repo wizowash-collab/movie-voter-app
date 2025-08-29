@@ -77,19 +77,10 @@
   <div id="appContent">
     <header>
       <h1>🎬 Movie Voter App</h1>
-      <p>Pick your mood, browse movies, and vote!</p>
+      <p>Pick your language, genre, and vote!</p>
     </header>
 
     <section id="filters">
-      <label for="mood">Mood:</label>
-      <select id="mood">
-        <option value="feel-good">Feel-Good</option>
-        <option value="thrilling">Thrilling</option>
-        <option value="romantic">Romantic</option>
-        <option value="magical">Magical</option>
-        <option value="inspiring">Inspiring</option>
-      </select>
-
       <label for="language">Language:</label>
       <select id="language">
         <option value="English">English</option>
@@ -123,22 +114,10 @@
     </section>
 
     <footer>
-      <p id="version">Version: August 29, 2025 – 11:10 AM PDT</p>
+      <p id="version">Version: August 29, 2025 – 12:44 PM PDT</p>
     </footer>
   </div>
 
   <script src="script.js"></script>
-  <script>
-    function checkPassword() {
-      const input = document.getElementById("passwordInput").value;
-      const error = document.getElementById("loginError");
-      if (input === "f@m!@#2025H3!!0") {
-        document.getElementById("loginScreen").style.display = "none";
-        document.getElementById("appContent").style.display = "block";
-      } else {
-        error.textContent = "Incorrect password. Try again.";
-      }
-    }
-  </script>
 </body>
 </html>
