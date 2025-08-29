@@ -5,59 +5,140 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Movie Voter App</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background-color: #fefefe;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    #appContent { display: none; }
+
+    #loginScreen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 1rem;
+      text-align: center;
+      background-color: #fff8e1;
+      min-height: 100vh;
+    }
+
+    #loginScreen h2 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    #loginScreen p {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
+
+    #loginScreen input {
+      padding: 0.6rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      margin-right: 0.5rem;
+    }
+
+    #loginScreen button {
+      padding: 0.6rem 1.2rem;
+      font-size: 1rem;
+      background-color: #ff9800;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    #loginScreen button:hover {
+      background-color: #f57c00;
+    }
+
+    #loginError {
+      color: red;
+      margin-top: 1rem;
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>🎬 Movie Voter App</h1>
-    <p>Pick your mood, browse movies, and vote!</p>
-  </header>
+  <div id="loginScreen">
+    <h2>🔐 Welcome to the Family Movie Picker!</h2>
+    <p>🎉 Only the chosen ones may enter... and yes, that means you (if you know the password).</p>
+    <input type="password" id="passwordInput" placeholder="Enter password" />
+    <button onclick="checkPassword()">Unlock</button>
+    <div id="loginError"></div>
+  </div>
 
-  <section id="filters">
-    <label for="mood">Mood:</label>
-    <select id="mood">
-      <option value="feel-good">Feel-Good</option>
-      <option value="thrilling">Thrilling</option>
-      <option value="romantic">Romantic</option>
-      <option value="magical">Magical</option>
-      <option value="inspiring">Inspiring</option>
-    </select>
+  <div id="appContent">
+    <header>
+      <h1>🎬 Movie Voter App</h1>
+      <p>Pick your mood, browse movies, and vote!</p>
+    </header>
 
-    <label for="language">Language:</label>
-    <select id="language">
-      <option value="English">English</option>
-      <option value="Japanese">Japanese</option>
-      <option value="Spanish">Spanish</option>
-      <option value="Hindi">Hindi</option>
-    </select>
+    <section id="filters">
+      <label for="mood">Mood:</label>
+      <select id="mood">
+        <option value="feel-good">Feel-Good</option>
+        <option value="thrilling">Thrilling</option>
+        <option value="romantic">Romantic</option>
+        <option value="magical">Magical</option>
+        <option value="inspiring">Inspiring</option>
+      </select>
 
-    <label for="genre">Genre:</label>
-    <select id="genre">
-      <option value="Comedy">Comedy</option>
-      <option value="Drama">Drama</option>
-      <option value="Animation">Animation</option>
-      <option value="Adventure">Adventure</option>
-    </select>
+      <label for="language">Language:</label>
+      <select id="language">
+        <option value="English">English</option>
+        <option value="Japanese">Japanese</option>
+        <option value="Spanish">Spanish</option>
+        <option value="Hindi">Hindi</option>
+      </select>
 
-    <button id="loadMovies">Browse Movies</button>
-  </section>
+      <label for="genre">Genre:</label>
+      <select id="genre">
+        <option value="Comedy">Comedy</option>
+        <option value="Drama">Drama</option>
+        <option value="Animation">Animation</option>
+        <option value="Adventure">Adventure</option>
+      </select>
 
-  <section id="search">
-    <h2>🔍 Search Any Movie</h2>
-    <input type="text" id="searchInput" placeholder="Type a movie title..." />
-    <button id="searchBtn">Search</button>
-  </section>
+      <button id="loadMovies">Browse Movies</button>
+    </section>
 
-  <section id="shortlist">
-    <h2>🕒 5-Minute Voting Grid</h2>
-    <div id="movieGrid" class="grid"></div>
-    <div id="winner"></div>
-    <button id="exportBtn">📄 Export to Notes</button>
-  </section>
+    <section id="search">
+      <h2>🔍 Search Any Movie</h2>
+      <input type="text" id="searchInput" placeholder="Type a movie title..." />
+      <button id="searchBtn">Search</button>
+    </section>
 
-  <footer>
-    <p id="version">Version: August 28, 2025 – 11:55 PM PDT</p>
-  </footer>
+    <section id="shortlist">
+      <h2>🕒 5-Minute Voting Grid</h2>
+      <div id="movieGrid" class="grid"></div>
+      <div id="winner"></div>
+      <button id="exportBtn">📄 Export to Notes</button>
+    </section>
+
+    <footer>
+      <p id="version">Version: August 29, 2025 – 11:10 AM PDT</p>
+    </footer>
+  </div>
 
   <script src="script.js"></script>
+  <script>
+    function checkPassword() {
+      const input = document.getElementById("passwordInput").value;
+      const error = document.getElementById("loginError");
+      if (input === "f@m!@#2025H3!!0") {
+        document.getElementById("loginScreen").style.display = "none";
+        document.getElementById("appContent").style.display = "block";
+      } else {
+        error.textContent = "Incorrect password. Try again.";
+      }
+    }
+  </script>
 </body>
 </html>
