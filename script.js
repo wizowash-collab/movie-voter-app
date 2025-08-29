@@ -21,45 +21,66 @@ loadBtn.addEventListener("click", async () => {
   votes = {};
 
   for (let title of sampleMovies) {
-    const res = await fetch(`https://www.omdbapi.com/?t=${encodeURIComponent(title)}&apikey=${API_KEY}`);
-    const data = await res.json();
+    try {
+      const res = await fetch(`https://www.omdbapi.com/?t=${encodeURIComponent(title)}&apikey=${API_KEY}`);
+      const data = await res.json();
 
-    const card = document.createElement("div");
-    card.className = "movie-card";
+      if (!data || data.Response === "False") {
+        console.warn(`Movie not found: ${title}`);
+        continue;
+      }
 
-    const poster = data.Poster !== "N/A" ? data.Poster : "assets/placeholder.jpg";
-    card.innerHTML = `
-      <img src="${poster}" alt="${data.Title}" />
-      <h3>${data.Title}</h3>
-      <p>${data.Genre}</p>
-      <p>🌐 ${data.Language}, ⏱️ ${data.Runtime}</p>
-      <p>⭐ ${data.imdbRating}</p>
-      <div class="vote-buttons">
-        <button onclick="castVote('${data.Title}', 5)">👍</button>
-        <button onclick="castVote('${data.Title}', 2)">😐</button>
-        <button onclick="castVote('${data.Title}', 1)">👎</button>
-      </div>
-    `;
+      const poster = data.Poster && data.Poster !== "N/A" ? data.Poster : "assets/placeholder.jpg";
+      const language = data.Language && data.Language !== "N/A" ? data.Language : "Not available";
+      const runtime = data.Runtime && data.Runtime !== "N/A" ? data.Runtime : "Not available";
+      const rating = data.imdbRating && data.imdbRating !== "N/A" ? data.imdbRating : "Not rated";
+      const genre = data.Genre && data.Genre !== "N/A" ? data.Genre : "Not available";
+      const titleText = data.Title || title;
 
-    movieGrid.appendChild(card);
-    votes[data.Title] = 0;
+      const card = document.createElement("div");
+      card.className = "movie-card";
+
+      card.innerHTML = `
+        <img src="${poster}" alt="${titleText}" />
+        <h3>${titleText}</h3>
+        <p>${genre}</p>
+        <p>🌐 ${language}, ⏱️ ${runtime}</p>
+        <p>⭐ ${rating}</p>
+        <div class="vote-buttons">
+          <button onclick="castVote('${titleText}', 5)">👍</button>
+          <button onclick="castVote('${titleText}', 2)">😐</button>
+          <button onclick="castVote('${titleText}', 1)">👎</button>
+        </div>
+      `;
+
+      movieGrid.appendChild(card);
+      votes[titleText] = 0;
+    } catch (error) {
+      console.error(`Error loading movie: ${title}`, error);
+    }
   }
 
   // Start 5-minute timer
   setTimeout(() => {
     const winner = Object.entries(votes).sort((a, b) => b[1] - a[1])[0];
-    winnerDiv.textContent = `🏆 Most Points: ${winner[0]}`;
+    winnerDiv.textContent = winner
+      ? `🏆 Most Points: ${winner[0]}`
+      : "No votes cast.";
   }, 5 * 60 * 1000);
 });
 
 window.castVote = function(title, points) {
-  votes[title] += points;
+  if (votes[title] !== undefined) {
+    votes[title] += points;
+  }
 };
 
 exportBtn.addEventListener("click", () => {
   const winner = Object.entries(votes).sort((a, b) => b[1] - a[1])[0];
-  const text = `Movie Night Pick: ${winner[0]}\n\nShortlist:\n` +
-    Object.entries(votes).map(([title, score]) => `${title}: ${score} pts`).join("\n");
+  const text = winner
+    ? `Movie Night Pick: ${winner[0]}\n\nShortlist:\n` +
+      Object.entries(votes).map(([title, score]) => `${title}: ${score} pts`).join("\n")
+    : "No votes were cast.";
 
   const blob = new Blob([text], { type: "text/plain" });
   const url = URL.createObjectURL(blob);
